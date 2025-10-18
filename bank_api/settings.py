@@ -137,6 +137,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+<<<<<<< HEAD
 AUTH_USER_MODEL = 'users.User'
 
 #
@@ -150,3 +151,6 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+=======
+AUTH_USER_MODEL = 'users.User'
+>>>>>>> 55421c09939a916901c07dd81c0316e1d9c2242c
