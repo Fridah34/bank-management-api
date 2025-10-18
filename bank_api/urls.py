@@ -23,7 +23,7 @@ from accounts.views import AccountViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'accounts', AccountViewSet)
+router.register(r'accounts', AccountViewSet, basename='accounts')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
