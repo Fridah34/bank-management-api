@@ -17,27 +17,30 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
-<<<<<<< HEAD
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 from users.views import UserViewSet,RegisterView
-=======
-from users.views import UserViewSet
->>>>>>> 55421c09939a916901c07dd81c0316e1d9c2242c
 from accounts.views import AccountViewSet
+from transactions.views import TransactionViewSet
+from loans.views import LoanViewSet
+from audit.views import AuditLogViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
+router.register(r"users", UserViewSet, basename="users")
 router.register(r'accounts', AccountViewSet, basename='accounts')
+router.register(r"transactions", TransactionViewSet, basename="transactions")
+router.register(r"loans", LoanViewSet, basename="loans")
+router.register(r"auditlogs", AuditLogViewSet, basename="auditlogs") 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-<<<<<<< HEAD
+
     path('api/auth/register',RegisterView.as_view(),name='register'),
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path ('api/auth/token/refresh/', TokenRefreshView.as_view(),name='token_refresh'),
-    path('api/auth/', include('users.urls'))
-=======
->>>>>>> 55421c09939a916901c07dd81c0316e1d9c2242c
+    path('api/auth/', include('users.urls')),
 ]
 
+# Root endpoint for sanity check
+path("", lambda request: HttpResponse("Bank Management API is running 🚀")),

@@ -1,27 +1,32 @@
+# users/serializers.py
 from rest_framework import serializers
-from .models import User
-
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role']
-        
-        
-class RegisterSerializer (serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    
+        fields = ("id", "username", "email", "role", "first_name", "last_name")
+        read_only_fields = ("id", "role")
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']
-        
+        fields = ("id", "username", "email", "password", "role")
+        read_only_fields = ("id",)
+
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email = validated_data.get('email'),
-            password = validated_data['password']
-        ) 
-        return user   
-    
+        password = validated_data.pop("password")
+        # default role is customer unless explicitly provided
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+class TokenPairSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
