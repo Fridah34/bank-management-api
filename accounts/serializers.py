@@ -11,8 +11,9 @@ class AccountSerializer(serializers.ModelSerializer):
 class AccountCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ("id", "account_type")
+        fields = ("id",  "user", "account_number", "balance", "account_type" )
+        read_only_fields = ["user"]
 
     def create(self, validated_data):
         request = self.context["request"]
-        return Account.objects.create(user=request.user, **validated_data)
+        return Account.objects.create( **validated_data)

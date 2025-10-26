@@ -6,9 +6,12 @@ from .serializers import AccountSerializer, AccountCreateSerializer
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user.is_authenticated and getattr(request.user, "role", "") == "admin":
-            return True
-        return obj.user == request.user
+        user = request.user
+        # Safe guard: user might be AnonymousUser
+        if not user or not user.is_authenticated:
+            return False
+        # Allow admins or owners
+        return getattr(user, "role", "") == "admin" or obj.user == user
 
 class AccountViewSet(viewsets.ModelViewSet):
     """
