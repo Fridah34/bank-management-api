@@ -2,7 +2,9 @@ from django.db import models, transaction
 from django.utils import timezone
 from decimal import Decimal
 from audit.models import AuditLog
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 class Loan(models.Model):
     STATUS_CHOICES = [
         ("PENDING", "Pending"),
@@ -11,8 +13,8 @@ class Loan(models.Model):
         ("REPAID", "Repaid"),
     ]
 
-    account = models.ForeignKey(
-        "accounts.Account",
+    user = models.ForeignKey(
+        User,
         on_delete=models.CASCADE,
         related_name="loans",
         null=True,       # ✅ allows migration to pass safely

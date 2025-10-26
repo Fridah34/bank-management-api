@@ -11,5 +11,5 @@ class LoanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Loan
-        fields = ("id", "user", "amount_requested", "interest_rate", "status", "created_at", "reviewed_by", "reviewed_at")
-        read_only_fields = ("id", "status", "created_at", "reviewed_by", "reviewed_at")
+        fields = ("id", "user", "amount", "interest_rate", "status", "created_at", "reviewed_by", "updated_at")
+        read_only_fields = ("id", "status", "created_at", "reviewed_by", "updated_at")
