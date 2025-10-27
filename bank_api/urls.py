@@ -39,7 +39,7 @@ urlpatterns = [
     path('api/auth/register',RegisterView.as_view(),name='register'),
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path ('api/auth/token/refresh/', TokenRefreshView.as_view(),name='token_refresh'),
-    path('api/auth/', include('users.urls')),
+    path('api/auth/', include('rest_framework.urls')),
 ]
 
 # Root endpoint for sanity check

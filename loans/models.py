@@ -3,6 +3,7 @@ from django.utils import timezone
 from decimal import Decimal
 from audit.models import AuditLog
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 User = get_user_model()
 class Loan(models.Model):
@@ -39,6 +40,13 @@ class Loan(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default="PENDING"
+    )
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='reviewed_loans'
     )
     approved_at = models.DateTimeField(
         null=True,
