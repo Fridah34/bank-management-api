@@ -17,6 +17,9 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Transaction.objects.all().select_related("account", "destination_account")
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        serializer.save(performed_by=self.request.user)
 
     def get_queryset(self):
         user = self.request.user

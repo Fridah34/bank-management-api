@@ -15,11 +15,12 @@ class Loan(models.Model):
     ]
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="loans",
         null=True,       # ✅ allows migration to pass safely
-        blank=True
+        blank=True,
+        help_text="Customer who requested the loan."
     )
     amount = models.DecimalField(
         max_digits=12,
@@ -46,7 +47,8 @@ class Loan(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='reviewed_loans'
+        related_name='reviewed_loans',
+        help_text="Admin who approved or rejected the loan."
     )
     approved_at = models.DateTimeField(
         null=True,
@@ -60,22 +62,22 @@ class Loan(models.Model):
         """Mark the loan as approved."""
         self.status = "APPROVED"
         self.approved_at = timezone.now()
-        self.save(update_fields=["status", "approved_at"])
+        self.save(update_fields=["status","reviewed_by", "approved_at"])
         AuditLog.objects.create(
-            user=self.account.user,
+            user=self.user,
             action="loan_approve",
-            description=f"Loan #{self.id} approved for account {self.account.account_number}"
+            description=f"Loan #{self.id} approved by {approved_by.username if approved_by else 'system'}"
         )
 
     def reject(self, approved_by=None):
         """Mark the loan as rejected."""
         self.status = "REJECTED"
         self.approved_at = timezone.now()
-        self.save(update_fields=["status","approved_at"])
+        self.save(update_fields=["status","reviewed_by", "approved_at"])
         AuditLog.objects.create(
-            user=self.account.user,
+            user=self.user,
             action="loan_reject",
-            description=f"Loan #{self.id} rejected for account {self.account.account_number}"
+            description=f"Loan #{self.id} rejected  by {approved_by.username if approved_by else 'system'} "
         )
 
     def mark_repaid(self):
@@ -83,7 +85,7 @@ class Loan(models.Model):
         self.status = "REPAID"
         self.save(update_fields=["status"])
         AuditLog.objects.create(
-            user=self.account.user,
+            user=self.user,
             action="loan_repay",
             description=f"Loan #{self.id} marked as repaid for account {self.account.account_number}"
         )

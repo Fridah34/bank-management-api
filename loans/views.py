@@ -26,7 +26,7 @@ class LoanViewSet(viewsets.ModelViewSet):
         # ensure the user is set to the requester
         serializer.save(user=self.request.user)
 
-    @action(detail=True, methods=["put"])
+    @action(detail=True, methods=["put"], permission_classes=[IsAdmin])
     def approve(self, request, pk=None):
         loan = self.get_object()
         try:
@@ -35,7 +35,7 @@ class LoanViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=["put"])
+    @action(detail=True, methods=["put"],permission_classes=[IsAdmin])
     def reject(self, request, pk=None):
         loan = self.get_object()
         try:
