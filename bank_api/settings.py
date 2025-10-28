@@ -34,14 +34,13 @@ ALLOWED_HOSTS = os.environ.get(
     "bank-management-api-pdm4.onrender.com,127.0.0.1,localhost"
 ).split(",")
 
-CSRF_TRUSTED_ORIGINS = os.environ.get(
-    "DJANGO_CSRF_TRUSTED_ORIGINS",
-    "https://bank-management-api-pdm4.onrender.com,http://127.0.0.1:8000,http://localhost:8000"
-).split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://bank-management-api-pdm4.onrender.com",
+]
 
-# CORS / CSRF - adjust to include your Render app URL (set in Render env)
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
-# e.g. set DJANGO_ALLOWED_HOSTS to your-render-app.onrender.com and CSRF_TRUSTED_ORIGINS to https://your-render-app.onrender.com
+
 
 # Application definition
 
