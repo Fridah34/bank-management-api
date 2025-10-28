@@ -30,8 +30,9 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = ["*"]
 
 # When deployed, Render will provide your service domain; add it or use wildcard if safe.
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost" ,"bank-management-api-pdm4.onrender.com ").split(",")
 CSRF_TRUSTED_ORIGINS = [
+    'https://bank-management-api-pdm4.onrender.com'
     'http://127.0.0.1:8000',
     'http://localhost:8000',
 ]
